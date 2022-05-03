@@ -1,23 +1,14 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 
-const initialState = {
-  greetings: [
-    {
-      name: "World",
-      greeting: "Hello World!"
-    }
-  ]
-};
+import thunk from 'redux-thunk';
+import greetingsReducer from './redux/greetings';
 
-const rootReducer = (state, action) => {
-  console.log(action.type);
-  switch (action.type) {
-    default:
-      return state
-  }
-}
+const reducer = combineReducers({
+  greetingsReducer,
+});
 
-export default function configureStore() {
-  const store = createStore(rootReducer, initialState);
-  return store
-}
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
+
+export default store;
